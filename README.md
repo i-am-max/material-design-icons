@@ -9,7 +9,7 @@ Files within `src` folder is licensed by Google under Apache license version 2.0
 - Download [download.js](download.js) from this repo
 - Download https://material.io/tools/icons/static/data.json and put it in the same folder as download.js
 - Run `npm install download` in the same folder
-- Run `node download.js <file type number>`in the same folder, replace `<file type number>` with one of the number below:
+- Run `node download.js <file type number>` in the same folder, replace `<file type number>` with one of the number below:
 ```
 0:  24px.svg
 
