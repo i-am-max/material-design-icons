@@ -1,7 +1,28 @@
 # material-design-icons
-This repo contains a miror of Material Design icons downloaded 7-4-2019 from the official website, which include icons that are not in the outdated Google repo (https://github.com/google/material-design-icons)
+This repo contains a mirror of Material Design icons downloaded 7-4-2019, from the official website, which include icons not in the outdated Google repo (https://github.com/google/material-design-icons)
 
 Files within src folder is licensed by Google under Apache license version 2.0.  
 - https://material.io/tools/icons/?style=baseline  
 - https://web.archive.org/web/20190320151142/https://material.io/tools/icons/?style=baseline
 
+## Download Material Design icons yourself
+- Download [download.js](download.js) from this repo
+- Run `npm install download` in the folder that contains the download.js file
+- Run `node download.js <file type>`, replace `<file type>` with the file type number that you want to download
+
+File type number are as follows:
+```
+0:  24px.svg
+1:  black-18.zip
+2:  black-24.zip
+3:  black-36.zip
+4:  black-48.zip
+5:  ios-black.zip
+6:  android-black.zip
+7:  white-18.zip
+8:  white-24.zip
+9:  white-36.zip
+10: white-48.zip
+11: ios-white.zip
+12: android-white.zip
+```
