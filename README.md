@@ -1,4 +1,4 @@
-# material-design-icons
+# Material Design icons
 This repo contains a mirror of Material Design icons downloaded 7-4-2019, from the official website, including icons not in the outdated Google repo (https://github.com/google/material-design-icons)
 
 Files within `src` folder is licensed by Google under Apache license version 2.0  
