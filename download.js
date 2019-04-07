@@ -1,5 +1,4 @@
 const fs = require('fs');
-const process = require('process');
 const download = require('download');
 
 const styles = ['baseline', 'outline', 'round', 'twotone', 'sharp'];
