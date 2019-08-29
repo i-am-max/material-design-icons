@@ -7,8 +7,8 @@ const fetch = require('node-fetch');
     const styles = ['baseline', 'outlined', 'round', 'twotone', 'sharp'];
     const fileTypes = [
         '24px.svg',
-        'black-18.zip', 'black-24.zip', 'black-36.zip', 'black-48.zip', 'ios-black.zip', 'android-black.zip',
-        'white-18.zip', 'white-24.zip', 'white-36.zip', 'white-48.zip', 'ios-white.zip', 'android-white.zip'
+        'black-18dp.zip', 'black-24dp.zip', 'black-36dp.zip', 'black-48dp.zip', 'black-ios.zip', 'black-android.zip',
+        'white-18dp.zip', 'white-24dp.zip', 'white-36dp.zip', 'white-48dp.zip', 'white-ios.zip', 'white-android.zip'
     ];
 
     const downloadType = async (fileType) => {
@@ -19,7 +19,7 @@ const fetch = require('node-fetch');
                     let url = `https://fonts.gstatic.com/s/i/materialicons${style !== 'baseline' ? style : ''}/${icon.id}/v1/${fileType}`;
                     PromiseArray.push(
                         new Promise(async (resolve) => {
-                            try { await download(url, `./src/${fileType}/${category.name}/${icon.id}`); } catch (e) { console.log(`Not downloaded: ${url}`); };
+                            try { await download(url, `./src/${fileType}/${category.name}/${icon.id}`, { filename: `${style}-${icon.id}-${fileType}` }); } catch (e) { console.log(`Not downloaded: ${url}`); };
                             resolve();
                         })
                     );
