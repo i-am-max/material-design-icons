@@ -1,22 +1,10 @@
 {
   "name": "material-design-icons",
-  "version": "1.0.0",
-  "description": "This repo contains a mirror of Material Design icons downloaded 7-4-2019, from the official website, including icons not in the outdated Google repo (https://github.com/google/material-design-icons)",
-  "main": "download.js",
   "scripts": {
     "download": "node download.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/max-loh/material-design-icons.git"
-  },
-  "author": "",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/max-loh/material-design-icons/issues"
-  },
-  "homepage": "https://github.com/max-loh/material-design-icons#readme",
   "dependencies": {
-    "download": "^7.1.0"
+    "download": "^7.1.0",
+    "node-fetch": "^2.6.0"
   }
 }
