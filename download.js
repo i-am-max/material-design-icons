@@ -2,8 +2,10 @@ const download = require('download');
 const fetch = require('node-fetch');
 
 (async () => {
-    const json = await (await fetch('https://material.io/tools/icons/static/data.json')).json();
-    const styles = ['baseline', 'outlined', 'round', 'twotone', 'sharp'];
+    const json = await (async () => {
+        const text = await (await fetch('https://fonts.google.com/metadata/icons')).text();
+        return JSON.parse(text.substring(text.indexOf("\n") + 1));
+    })();
     const fileTypes = [
         '24px.svg',
         'black-18dp.zip', 'black-24dp.zip', 'black-36dp.zip', 'black-48dp.zip', 'black-ios.zip', 'black-android.zip',
@@ -12,17 +14,16 @@ const fetch = require('node-fetch');
 
     const downloadType = async (fileType) => {
         let PromiseArray = []
-        for (let category of json.categories) {
-            for (let icon of category.icons) {
-                for (let style of styles) {
-                    let url = `https://fonts.gstatic.com/s/i/materialicons${style !== 'baseline' ? style : ''}/${icon.id}/v1/${fileType}`;
-                    PromiseArray.push(
-                        new Promise(async (resolve) => {
-                            try { await download(url, `./src/${fileType}/${category.name}/${icon.id}`, { filename: `${style}-${icon.id}-${fileType}` }); } catch (e) { console.log(`Not downloaded: ${url}`); };
-                            resolve();
-                        })
-                    );
-                }
+        for (let icon of json.icons) {
+            for (let family of json.families) {
+                const url = `https://fonts.gstatic.com/s/i/${family.replace(/ /g, '').toLowerCase()}/${icon.name}/v1/${fileType}`;
+                PromiseArray.push(
+                    new Promise(async (resolve) => {
+                        const familyName = family.replace(/Material Icons/, '').replace(/ /g, '').toLowerCase();
+                        try { await download(url, `./src/${fileType}/${icon.categories[0]}/${icon.name}`, { filename: `${familyName !== '' ? `${familyName}-` : ''}${icon.name}-${fileType}` }); } catch (e) { console.log(`Not downloaded: ${url}`); };
+                        resolve();
+                    })
+                );
             }
         }
         return Promise.all(PromiseArray);
