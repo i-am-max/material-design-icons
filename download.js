@@ -1,11 +1,19 @@
-import download from 'download';
+import * as fs from 'fs';
 import fetch from 'node-fetch';
+import isequal from 'lodash.isequal';
+import download from 'download';
 
 (async () => {
     const json = await (async () => {
         const text = await (await fetch('https://fonts.google.com/metadata/icons')).text();
         return JSON.parse(text.substring(text.indexOf("\n") + 1));
     })();
+
+    if (fs.existsSync('icons.json') && isequal(JSON.parse(fs.readFileSync('icons.json', 'utf8')), json)) return;
+    console.log('Deleting old src folder\n');
+    fs.rmdirSync('./src', { recursive: true });
+    fs.writeFileSync('icons.json', JSON.stringify(json));
+
     const fileTypes = [
         '24px.svg',
         'black-18dp.zip', 'black-24dp.zip', 'black-36dp.zip', 'black-48dp.zip', 'black-ios.zip', 'black-android.zip',
