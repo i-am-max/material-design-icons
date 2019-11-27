@@ -21,8 +21,8 @@ import download from 'download';
         let allDownloaded = true;
         for (let icon of json.icons) {
             for (let family of json.families) {
-                const url = `https://fonts.gstatic.com/s/i/${family.replace(/ /g, '').toLowerCase()}/${icon.name}/v${icon.version}/${fileType}`;
                 const familyName = family.replace(/Material Icons/, '').replace(/ /g, '').toLowerCase();
+                const url = `https://fonts.gstatic.com/s/i/materialicons${familyName}/${icon.name}/v${icon.version}/${fileType}`;
                 PromiseArray.push(
                     new Promise(async (resolve) => {
                         try {
