@@ -11,6 +11,6 @@ This repo contains a mirror of Material Design icons downloaded 28-10-2019, from
 
 ## License
 
-Files within `src` folder are licensed by Google under [Apache license 2.0](https://web.archive.org/web/20191028063427/https://material.io/resources/icons/).
+Files within `src` folder are licensed by Google under [Apache license 2.0](https://web.archive.org/web/20200325210751/https://material.io/resources/icons/).
 
 Download script and other files in the root folder are licensed under Apache license 2.0.
