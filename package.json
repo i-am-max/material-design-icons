@@ -1,7 +1,8 @@
 {
   "name": "material-design-icons",
+  "main": "download.js",
   "scripts": {
-    "download": "node --experimental-modules --no-warnings download.js"
+    "start": "node --experimental-modules --no-warnings . && bash download-fonts.sh"
   },
   "dependencies": {
     "download": "^7.1.0",

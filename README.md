@@ -4,13 +4,13 @@ This repo contains a mirror of Material Design icons downloaded 28-10-2019, from
 
 ## Manually download Material Icons
 
+- Make sure you have 7-Zip and Bash/Git Bash installed
 - Download this repo
-- Delete old icon files in `src` folder
 - Run `npm install` in the repo folder
-- Run `npm run download` in the repo folder
+- Run `npm start` in the repo folder
 
 ## License
 
-Files within `src` folder are licensed by Google under [Apache license 2.0](https://web.archive.org/web/20200325210751/https://material.io/resources/icons/).
+Files within `src` and `fonts` folder are licensed by Google under [Apache license 2.0](https://web.archive.org/web/20200325210751/https://material.io/resources/icons/).
 
 Download script and other files in the root folder are licensed under Apache license 2.0.
