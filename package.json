@@ -2,12 +2,13 @@
   "name": "material-design-icons",
   "main": "download.js",
   "scripts": {
-    "start": "node --experimental-modules --no-warnings . && bash download-fonts.sh"
+    "start": "bash download-fonts.sh && node --experimental-modules --no-warnings ."
   },
   "dependencies": {
     "download": "^7.1.0",
-    "lodash.isequal": "^4.5.0",
-    "node-fetch": "^2.6.0"
+    "lodash": "^4.17.19",
+    "node-fetch": "^2.6.0",
+    "opentype.js": "^1.3.3"
   },
   "repository": {
     "type": "git",
