@@ -12,7 +12,7 @@ import download from 'download';
 
   // Get list of removed icons from font ligatures of MaterialIcons-Regular.ttf
   const removedIcons = (() => {
-    const font = opentype.loadSync('./fonts/Material_Icons/MaterialIcons-Regular.ttf');
+    const font = opentype.loadSync('./src/icon-font/Material_Icons/MaterialIcons-Regular.ttf');
     const invertedGlyphIndexMap = _.invert(font.tables.cmap.glyphIndexMap);
     const ligatures = font.tables.gsub.lookups.flatMap(lookup =>
       lookup.subtables.flatMap(subtable => {
