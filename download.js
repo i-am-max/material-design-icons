@@ -46,7 +46,7 @@ import download from 'download';
             let retryCount = 0;
             while (retryCount < retryLimit) {
               try {
-                await download(url, `./src/${fileType}/${icon.categories[0]}/${icon.name}/v${version}`, { filename: `${familyName + (familyName ? '-' : '')}${icon.name}-${fileType}` });
+                await download(url, `./src/${fileType}/${icon.categories[0]}/${icon.name}/v${version}`, { filename: `${familyName + (familyName ? '-' : '')}${icon.name}-v${version}-${fileType}` });
                 break;
               } catch (error) {
                 if (error.statusCode === 404) break;
