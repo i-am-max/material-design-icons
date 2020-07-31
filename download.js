@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import path from 'path';
 import fetch from 'node-fetch';
 import opentype from 'opentype.js';
 import _ from 'lodash';
@@ -41,21 +42,26 @@ import download from 'download';
         new Promise(async resolve => {
           for (let version = icon.version; version > 0; version--) {
             const familyName = family.replace(/Material Icons/, '').replace(/ /g, '').toLowerCase();
-            const url = `https://fonts.gstatic.com/s/i/materialicons${familyName}/${icon.name}/v${version}/${fileType}`;
-            const retryLimit = 100;
-            let retryCount = 0;
-            while (retryCount < retryLimit) {
-              try {
-                await download(url, `./src/${fileType}/${icon.categories[0]}/${icon.name}/v${version}`, { filename: `${familyName + (familyName ? '-' : '')}${icon.name}-v${version}-${fileType}` });
-                break;
-              } catch (error) {
-                if (error.statusCode === 404) break;
-                else retryCount++;
+            const destination = `./src/${fileType}/${icon.categories[0]}/${icon.name}/v${version}`;
+            const filename = `${familyName + (familyName ? '-' : '')}${icon.name}-v${version}-${fileType}`;
+            // Only download file if it doesn't exist
+            if (!fs.existsSync(path.resolve(destination, filename))) {
+              const url = `https://fonts.gstatic.com/s/i/materialicons${familyName}/${icon.name}/v${version}/${fileType}`;
+              const retryLimit = 100;
+              let retryCount = 0;
+              while (retryCount < retryLimit) {
+                try {
+                  await download(url, destination, { filename: filename });
+                  break;
+                } catch (error) {
+                  if (error.statusCode === 404) break;
+                  else retryCount++;
+                }
               }
-            }
-            if (retryCount === retryLimit) {
-              allDownloaded = false;
-              console.log(`Not downloaded: ${url}`);
+              if (retryCount === retryLimit) {
+                allDownloaded = false;
+                console.log(`Not downloaded: ${url}`);
+              }
             }
           }
           resolve();
