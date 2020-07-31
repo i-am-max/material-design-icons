@@ -35,8 +35,11 @@ import download from 'download';
     'white-18dp.zip', 'white-24dp.zip', 'white-36dp.zip', 'white-48dp.zip', 'white-ios.zip', 'white-android.zip'
   ];
 
+  const notDownloaded = [];
+
   const downloadFileType = async (fileType) => {
-    let allDownloaded = true;
+    let downloadedCount = 0;
+    process.stdout.write(`Downloading: ${fileType}`);
     const PromiseArray = [...removedIcons, ...metadata.icons].flatMap(icon =>
       metadata.families.map(family =>
         new Promise(async resolve => {
@@ -58,23 +61,23 @@ import download from 'download';
                   else retryCount++;
                 }
               }
-              if (retryCount === retryLimit) {
-                allDownloaded = false;
-                console.log(`Not downloaded: ${url}`);
-              }
+              if (retryCount === retryLimit) notDownloaded.push(url);
             }
           }
+          downloadedCount++;
+          process.stdout.cursorTo(0);
+          // https://stackoverflow.com/a/59805130/11077662
+          process.stdout.clearLine(1);
+          // PromiseArray may not be initialized yet
+          try { process.stdout.write(`Downloading: ${fileType} ${downloadedCount}/${PromiseArray.length}`); } catch (e) { }
           resolve();
         })
       )
     );
-    process.stdout.write(`Downloading: ${fileType}`);
     await Promise.all(PromiseArray);
-    if (allDownloaded) {
-      process.stdout.clearLine();
-      process.stdout.cursorTo(0);
-    }
-    process.stdout.write(`Downloaded: ${fileType}\n`);
+    process.stdout.cursorTo(0);
+    process.stdout.clearLine(1);
+    console.log(`Downloaded: ${fileType}`);
   };
 
   if (fs.existsSync('icons.json') && _.isEqual(JSON.parse(fs.readFileSync('icons.json', 'utf8')), metadata)) {
@@ -82,9 +85,10 @@ import download from 'download';
     return;
   }
 
+  console.log('Downloading...');
   for (const fileType of fileTypes) {
-    await downloadFileType(fileType);
+    await downloadFileType(fileType).catch(console.error);
   }
-
   fs.writeFileSync('icons.json', JSON.stringify(metadata));
+  console.log(`Download completed ${notDownloaded.length === 0 ? 'successfully' : `with errors\nNot downloaded:\n${notDownloaded.join('\n')}`}`);
 })();
