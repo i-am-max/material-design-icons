@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
 import opentype from 'opentype.js';
@@ -40,39 +40,36 @@ import download from 'download';
   const downloadFileType = async (fileType) => {
     let downloadedCount = 0;
     process.stdout.write(`Downloading: ${fileType}`);
-    const PromiseArray = [...removedIcons, ...metadata.icons].flatMap(icon =>
-      metadata.families.map(family =>
-        new Promise(async resolve => {
-          for (let version = icon.version; version > 0; version--) {
-            const familyName = family.replace(/Material Icons/, '').replace(/ /g, '').toLowerCase();
-            const destination = `./src/${fileType}/${icon.categories[0]}/${icon.name}/v${version}`;
-            const filename = `${familyName + (familyName ? '-' : '')}${icon.name}-v${version}-${fileType}`;
-            // Only download file if it doesn't exist
-            if (!fs.existsSync(path.resolve(destination, filename))) {
-              const url = `https://fonts.gstatic.com/s/i/materialicons${familyName}/${icon.name}/v${version}/${fileType}`;
-              const retryLimit = 100;
-              let retryCount = 0;
-              while (retryCount < retryLimit) {
-                try {
-                  await download(url, destination, { filename: filename });
-                  break;
-                } catch (error) {
-                  if (error.statusCode === 404) break;
-                  else retryCount++;
-                }
+    const PromiseArray = [...metadata.icons, ...removedIcons].flatMap(icon =>
+      metadata.families.map(async family => {
+        for (let version = icon.version; version > 0; version--) {
+          const familyName = family.replace(/Material Icons/, '').replace(/ /g, '').toLowerCase();
+          const destination = `./src/${fileType}/${icon.categories[0]}/${icon.name}/v${version}`;
+          const filename = `${familyName + (familyName ? '-' : '')}${icon.name}-v${version}-${fileType}`;
+          // Only download file if it doesn't exist
+          if (!fs.existsSync(path.resolve(destination, filename))) {
+            const url = `https://fonts.gstatic.com/s/i/materialicons${familyName}/${icon.name}/v${version}/${fileType}`;
+            const retryLimit = 100;
+            let retryCount = 0;
+            while (retryCount < retryLimit) {
+              try {
+                await download(url, destination, { filename: filename });
+                break;
+              } catch (error) {
+                if (error.statusCode === 404) break;
+                else retryCount++;
               }
-              if (retryCount === retryLimit) notDownloaded.push(url);
             }
+            if (retryCount === retryLimit) notDownloaded.push(url);
           }
-          downloadedCount++;
-          process.stdout.cursorTo(0);
-          // https://stackoverflow.com/a/59805130/11077662
-          process.stdout.clearLine(1);
-          // PromiseArray may not be initialized yet
-          try { process.stdout.write(`Downloading: ${fileType} ${downloadedCount}/${PromiseArray.length}`); } catch (e) { }
-          resolve();
-        })
-      )
+        }
+        downloadedCount++;
+        process.stdout.cursorTo(0);
+        // https://stackoverflow.com/a/59805130/11077662
+        process.stdout.clearLine(1);
+        // PromiseArray may not be initialized yet
+        try { process.stdout.write(`Downloading: ${fileType} ${downloadedCount}/${PromiseArray.length}`); } catch (e) { }
+      })
     );
     await Promise.all(PromiseArray);
     process.stdout.cursorTo(0);
