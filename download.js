@@ -1,11 +1,23 @@
 import fs from 'fs';
 import path from 'path';
+import download from 'download';
+import decompress from 'decompress';
 import fetch from 'node-fetch';
 import opentype from 'opentype.js';
 import _ from 'lodash';
-import download from 'download';
 
 (async () => {
+  // Download icon font
+  const downloadIconFont = async () => {
+    const filename = 'icon-font.zip';
+    const destination = 'src/icon-font';
+    return fs.promises.rmdir(destination, { recursive: true })
+      .then(() => download('https://fonts.google.com/download?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Sharp|Material+Icons+Round|Material+Icons+Two+Tone', destination, { filename: filename }))
+      .then(() => decompress(`${destination}/${filename}`, destination))
+      .then(() => console.log(`Downloaded: icon font`));
+  };
+  await downloadIconFont();
+
   const metadata = await (async () => {
     const text = await (await fetch('https://fonts.google.com/metadata/icons')).text();
     return JSON.parse(text.substring(text.indexOf("\n") + 1));
@@ -79,13 +91,11 @@ import download from 'download';
 
   if (fs.existsSync('icons.json') && _.isEqual(JSON.parse(fs.readFileSync('icons.json', 'utf8')), metadata)) {
     console.log('No changes found in https://fonts.google.com/metadata/icons');
-    return;
+  } else {
+    for (const fileType of fileTypes) {
+      await downloadFileType(fileType).catch(console.error);
+    }
+    fs.writeFileSync('icons.json', JSON.stringify(metadata));
   }
-
-  console.log('Downloading...');
-  for (const fileType of fileTypes) {
-    await downloadFileType(fileType).catch(console.error);
-  }
-  fs.writeFileSync('icons.json', JSON.stringify(metadata));
   console.log(`Download completed ${notDownloaded.length === 0 ? 'successfully' : `with errors\nNot downloaded:\n${notDownloaded.join('\n')}`}`);
 })();
