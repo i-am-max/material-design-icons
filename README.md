@@ -4,7 +4,6 @@ This repo contains a mirror of Material Design icons downloaded 30-7-2020, from 
 
 ## Manually download Material Icons
 
-- Make sure you have 7-Zip and Bash/Git Bash installed
 - Download this repo
 - Run `npm install` in the repo folder
 - Run `npm start` in the repo folder
