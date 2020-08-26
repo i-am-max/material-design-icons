@@ -41,6 +41,18 @@ import _ from 'lodash';
       .map(iconName => ({ name: iconName, version: 20, categories: ['removed'] })); // Start downloading from version 20, end at version 1
   })();
 
+  const newIcons = (() => {
+    if (!fs.existsSync('icons.json')) {
+      return metadata.icons;
+    } else {
+      const oldMetadata = JSON.parse(fs.readFileSync('icons.json', 'utf8'));
+      return metadata.icons.filter(icon => {
+        if (typeof oldMetadata.icons.find(oldIcon => (oldIcon.name === icon.name && oldIcon.version === icon.version)) === 'undefined') return true;
+        else return false;
+      });
+    }
+  })();
+
   const fileTypes = [
     '24px.svg',
     'black-18dp.zip', 'black-24dp.zip', 'black-36dp.zip', 'black-48dp.zip', 'black-ios.zip', 'black-android.zip',
@@ -52,7 +64,7 @@ import _ from 'lodash';
   const downloadFileType = async (fileType) => {
     let downloadedCount = 0;
     process.stdout.write(`Downloading: ${fileType}`);
-    const PromiseArray = [...metadata.icons, ...removedIcons].flatMap(icon =>
+    const PromiseArray = [...newIcons, ...removedIcons].flatMap(icon =>
       metadata.families.map(async family => {
         for (let version = icon.version; version > 0; version--) {
           const familyName = family.replace(/Material Icons/, '').replace(/ /g, '').toLowerCase();
@@ -89,9 +101,10 @@ import _ from 'lodash';
     console.log(`Downloaded: ${fileType}`);
   };
 
-  if (fs.existsSync('icons.json') && _.isEqual(JSON.parse(fs.readFileSync('icons.json', 'utf8')), metadata)) {
+  if (newIcons.length === 0) {
     console.log('No changes found in https://fonts.google.com/metadata/icons');
   } else {
+    console.log(`New/modified icons since last download: ${newIcons.map(icon => icon.name).join(', ')}`);
     for (const fileType of fileTypes) {
       await downloadFileType(fileType).catch(console.error);
     }
