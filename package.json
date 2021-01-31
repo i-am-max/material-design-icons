@@ -1,0 +1,21 @@
+{
+  "name": "material-design-icons",
+  "main": "download.js",
+  "scripts": {
+    "start": "node --experimental-modules --no-warnings ."
+  },
+  "dependencies": {
+    "decompress": "^4.2.1",
+    "download": "^8.0.0",
+    "lodash": "^4.17.19",
+    "node-fetch": "^2.6.0",
+    "opentype.js": "^1.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/max-loh/material-design-icons.git"
+  },
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module"
+}
