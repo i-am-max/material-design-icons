@@ -1,6 +1,6 @@
 # Material Design icons
 
-This repo contains a mirror of Material Design icons downloaded 5-2-2021, from the official website.
+This repo contains a mirror of Material Design icons downloaded 16-2-2021, from the official website.
 
 ## Manually download Material Icons
 
